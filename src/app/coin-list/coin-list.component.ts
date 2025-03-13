@@ -58,4 +58,13 @@ export class CoinListComponent implements OnInit {
     this.router.navigate(['coin-detail',row.id])
   }
 
+  pauseAnimation() {
+    const container = document.querySelector('.scrolling-container');
+    container?.classList.add('paused');
+  }
+
+  resumeAnimation() {
+    const container = document.querySelector('.scrolling-container');
+    container?.classList.remove('paused');
+  }
 }

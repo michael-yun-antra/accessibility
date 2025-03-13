@@ -1,26 +1,34 @@
 <div class="banner">
     <div class="container">
         <div class="header">
-            <h2>Crypto Checker YT</h2>
-            <h6>Check all the crypto currency lastest updates</h6>
+            <h1>Crypto Checker YT</h1>
+            <h2>Check all the crypto currency lastest updates</h2>
         </div>
-        <div class="sub-header">
-            <marquee behavior="scroll" onmouseover="stop()" onmouseout="start()" loop="infinite" direction="left">
-                <div class="row">
-                    <ng-container *ngFor="let row of bannerData">
-                        <div class="col-1">
-                            <div class="card">
-                                <img [src]="row.image" width="100" class="img-fluid" >
-                                <div class="card-body">
-                                    <h5 class="card-title">{{row.symbol | uppercase}} <span class="text-danger">{{row.market_cap_change_percentage_24h}}%</span></h5>
-                                    <p class="card-text">{{row.current_price | currency: currency}}</p>
+        <div class="sub-header" aria-live="polite">
+            <div class="scrolling-container"
+                (mouseover)="pauseAnimation()"
+                (mouseout)="resumeAnimation()"
+                (focus)="pauseAnimation()"
+                (blur)="resumeAnimation()"
+                tabindex="0"
+                role="region"
+                aria-label="Scrolling banner with cryptocurrency data">
+                <div class="scrolling-content">
+                    <div class="row">
+                        <ng-container *ngFor="let row of bannerData">
+                            <div class="col-1">
+                                <div class="card">
+                                    <img [src]="row.image" width="100" class="img-fluid" alt="Coin icon for {{row.symbol}}">
+                                    <div class="card-body">
+                                        <h3 class="card-title">{{row.symbol | uppercase}} <span class="text-danger-new">{{row.market_cap_change_percentage_24h}}%</span></h3>
+                                        <p class="card-text">{{row.current_price | currency: currency}}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </ng-container>
-
+                        </ng-container>
+                    </div>
                 </div>
-            </marquee>
+            </div>
         </div>
     </div>
 </div>
@@ -29,7 +37,7 @@
     <!-- Table -->
     <mat-form-field appearance="standard">
         
-        <input style="color: aliceblue;" matInput (keyup)="applyFilter($event)" #input>
+        <input style="color: aliceblue;" matInput (keyup)="applyFilter($event)" #input aria-label="Input Filter">
     </mat-form-field>
 
     <div class="mat-elevation-z8">
@@ -39,8 +47,15 @@
             <ng-container matColumnDef="symbol">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Coin </th>
                 <td mat-cell *matCellDef="let row">
-                    <img [src]="row.image" width="50">
-                    <span class="mx-2"><a href="javascript:void(0)">{{row.symbol | uppercase}}</a></span>
+                    <img [src]="row.image" width="50" alt="Coin icon for {{row.symbol}}">
+                    <span class="mx-2">
+                        <a tabindex="0"
+                        [attr.aria-label]="'View details for ' + row.symbol"
+                        href="javascript:void(0)"
+                        >
+                            {{row.symbol | uppercase}}
+                        </a>
+                    </span>
                 </td>
             </ng-container>
 
@@ -65,7 +80,8 @@
 
             <ng-container matColumnDef="details">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Details </th>
-                <tr><a (click)="gotoDetails(row)" *matCellDef="let row" href="javascript:void(0)">Click here</a></tr>
+                <tr mat-cell>
+                    <a *matCellDef="let row" href="javascript:void(0)" class="details-new" aria-label="View more details about this coin" (click)="gotoDetails(row)" >View details</a></tr>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
